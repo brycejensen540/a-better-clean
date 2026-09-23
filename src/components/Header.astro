@@ -1,0 +1,158 @@
+---
+import { site } from '../data/site';
+import { services } from '../data/services';
+import { eventPages } from '../data/events';
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const isActive = (href: string): boolean =>
+  href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+
+const navClass = (active: boolean): string =>
+  `inline-flex items-center px-1 pb-1 text-sm font-semibold transition-colors ${
+    active ? 'border-b-2 border-hi text-ink' : 'border-b-2 border-transparent text-ink-soft hover:text-ink'
+  }`;
+---
+
+<header class="sticky top-0 z-50 border-b border-ink/8 bg-gradient-to-r from-accent/20 via-white/55 to-hi/20 backdrop-blur-xl">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+    <a href="/" class="flex items-center gap-2.5" aria-label="A Better Clean — home">
+      <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-white">
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M3 14l3.5-6 3 4 2.5-3.5L17 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 17h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </span>
+      <span class="font-display text-lg font-semibold tracking-tight text-ink">
+        A Better Clean
+      </span>
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden items-center gap-7 lg:flex" aria-label="Main navigation">
+      <a href="/" class={navClass(isActive('/'))}>Home</a>
+      <a href="/about/" class={navClass(isActive('/about'))}>About</a>
+
+      <!-- Services dropdown -->
+      <div class="group relative">
+        <button type="button" class="inline-flex items-center gap-1 border-b-2 border-transparent pb-1 text-sm font-semibold text-ink-soft transition-colors hover:text-ink">
+          Services
+          <svg class="h-3.5 w-3.5 transition-transform group-hover:rotate-180" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div class="invisible absolute left-0 top-full w-64 pt-3 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+          <div class="glass-card p-2">
+            {services.map((s) => (
+              <a href={`/services/${s.slug}/`} class={`block rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isActive(`/services/${s.slug}`) ? 'bg-accent-light text-accent-dark' : 'text-ink-soft hover:bg-surface-alt hover:text-ink'}`}>
+                {s.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Event types dropdown -->
+      <div class="group relative">
+        <button type="button" class="inline-flex items-center gap-1 border-b-2 border-transparent pb-1 text-sm font-semibold text-ink-soft transition-colors hover:text-ink">
+          Event Types
+          <svg class="h-3.5 w-3.5 transition-transform group-hover:rotate-180" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div class="invisible absolute right-0 top-full w-64 pt-3 opacity-0 transition-all duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+          <div class="glass-card p-2">
+            <a href="/events/" class={`block rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isActive('/events') && currentPath === '/events/' ? 'bg-hi-light text-hi-dark' : 'text-ink-soft hover:bg-surface-alt hover:text-ink'}`}>
+              All Event Types
+            </a>
+            {eventPages.map((e) => (
+              <a href={`/events/${e.slug}/`} class={`block rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${isActive(`/events/${e.slug}`) ? 'bg-hi-light text-hi-dark' : 'text-ink-soft hover:bg-surface-alt hover:text-ink'}`}>
+                {e.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <a href="/contact/" class={navClass(isActive('/contact'))}>Contact</a>
+    </nav>
+
+    <!-- Desktop CTAs -->
+    <div class="hidden items-center gap-3 lg:flex">
+      <a href={site.phoneHref} class="btn-outline px-5 py-2.5 text-sm">
+        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M3.5 4.5c0-1.1.9-2 2-2h2l1.5 4-2 1.5a11 11 0 005 5l1.5-2 4 1.5v2c0 1.1-.9 2-2 2A12.5 12.5 0 013.5 4.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+        </svg>
+        <span>Call Now</span>
+      </a>
+      <a href="/contact/#quote" class="btn-hi px-5 py-2.5 text-sm">Scope My Event</a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button
+      id="menu-toggle"
+      type="button"
+      class="flex h-11 w-11 items-center justify-center rounded-xl border border-ink/10 text-ink lg:hidden"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open menu"
+    >
+      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile panel -->
+  <div id="mobile-menu" class="hidden border-t border-ink/8 bg-gradient-to-r from-accent/15 via-white/70 to-hi/15 backdrop-blur-xl lg:hidden">
+    <nav class="mx-auto max-w-7xl space-y-1 px-4 py-5 sm:px-6" aria-label="Mobile navigation">
+      <a href="/" class="block rounded-lg px-4 py-3 text-sm font-semibold text-ink-soft hover:bg-surface-alt hover:text-ink">Home</a>
+      <a href="/about/" class="block rounded-lg px-4 py-3 text-sm font-semibold text-ink-soft hover:bg-surface-alt hover:text-ink">About</a>
+
+      <div>
+        <button type="button" class="mobile-submenu-toggle flex w-full items-center justify-between rounded-lg px-4 py-3 text-sm font-semibold text-ink-soft hover:bg-surface-alt hover:text-ink" aria-expanded="false" aria-controls="mobile-services">
+          Services
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div id="mobile-services" class="hidden space-y-1 pl-4">
+          {services.map((s) => (
+            <a href={`/services/${s.slug}/`} class="block rounded-lg px-4 py-2.5 text-sm text-ink-soft hover:bg-surface-alt hover:text-ink">{s.name}</a>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <button type="button" class="mobile-submenu-toggle flex w-full items-center justify-between rounded-lg px-4 py-3 text-sm font-semibold text-ink-soft hover:bg-surface-alt hover:text-ink" aria-expanded="false" aria-controls="mobile-events">
+          Event Types
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div id="mobile-events" class="hidden space-y-1 pl-4">
+          <a href="/events/" class="block rounded-lg px-4 py-2.5 text-sm text-ink-soft hover:bg-surface-alt hover:text-ink">All Event Types</a>
+          {eventPages.map((e) => (
+            <a href={`/events/${e.slug}/`} class="block rounded-lg px-4 py-2.5 text-sm text-ink-soft hover:bg-surface-alt hover:text-ink">{e.name}</a>
+          ))}
+        </div>
+      </div>
+
+      <a href="/contact/" class="block rounded-lg px-4 py-3 text-sm font-semibold text-ink-soft hover:bg-surface-alt hover:text-ink">Contact</a>
+
+      <div class="flex flex-col gap-3 pt-4">
+        <a href={site.phoneHref} class="btn-outline px-5 py-3 text-sm">
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M3.5 4.5c0-1.1.9-2 2-2h2l1.5 4-2 1.5a11 11 0 005 5l1.5-2 4 1.5v2c0 1.1-.9 2-2 2A12.5 12.5 0 013.5 4.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          </svg>
+          <span>Call {site.phone}</span>
+        </a>
+        <a href="/contact/#quote" class="btn-hi px-5 py-3 text-sm">Scope My Event</a>
+      </div>
+    </nav>
+  </div>
+</header>

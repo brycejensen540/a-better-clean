@@ -1,0 +1,6 @@
+# Cloudflare Pages configuration for the A Better Clean site.
+# `pages_build_output_dir` tells the Pages Git integration (and any deploy
+# workflow in .github/workflows/) where the build output lives.
+name = "a-better-clean"
+compatibility_date = "2025-01-01"
+pages_build_output_dir = "dist"

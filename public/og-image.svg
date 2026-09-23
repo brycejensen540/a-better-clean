@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#14211A" />
+      <stop offset="1" stop-color="#23362B" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <!-- Brand mark: amber ridge over ground line on evergreen tile -->
+  <rect x="104" y="108" width="112" height="112" rx="24" fill="#2E5E4E" />
+  <path d="M122 186l22-40 18 24 12-16 32 32" fill="none" stroke="#E8A317" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M122 200h76" stroke="#E8A317" stroke-width="9" stroke-linecap="round" />
+  <text x="248" y="182" font-family="sans-serif" font-size="54" font-weight="700" fill="#ffffff">A Better Clean</text>
+  <text x="120" y="330" font-family="sans-serif" font-size="72" font-weight="800" fill="#ffffff">Massive crowds.</text>
+  <text x="120" y="418" font-family="sans-serif" font-size="72" font-weight="800" fill="#E8A317">Massive cleanup.</text>
+  <text x="120" y="500" font-family="sans-serif" font-size="32" fill="#8A9A8F">Festival &amp; event waste removal · Overnight turnarounds · Diversion reporting</text>
+  <text x="120" y="556" font-family="sans-serif" font-size="26" fill="#7D8C82">Chicago, IL · Midwest-wide · (312) 555-0148</text>
+</svg>

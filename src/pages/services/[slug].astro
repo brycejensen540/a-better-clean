@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+import { services, type Service } from '../../data/services';
+import CtaBand from '../../components/CtaBand.astro';
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+const others = services.filter((s) => s.slug !== service.slug);
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  serviceType: service.name,
+  description: service.shortDescription,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: site.name,
+    url: site.url,
+    telephone: '+1-312-555-0148',
+    address: { '@type': 'PostalAddress', addressLocality: 'Chicago', addressRegion: 'IL', addressCountry: 'US' },
+  },
+  areaServed: 'Midwest United States',
+});
+---
+
+<BaseLayout title={`${service.name} | A Better Clean — Festival & Event Cleanup`} description={service.metaDescription} schema={schema}>
+  <!-- Page header -->
+  <section class="relative overflow-hidden bg-surface">
+    <div
+      class="pointer-events-none absolute -right-40 -top-40 h-[26rem] w-[26rem] rounded-full opacity-50 blur-3xl"
+      style="background: radial-gradient(closest-side, rgba(46, 94, 78, 0.2), transparent 70%);"
+      aria-hidden="true"
+    ></div>
+    <div class="relative mx-auto max-w-7xl px-4 pb-20 pt-24 sm:px-6 lg:px-8 lg:pb-28 lg:pt-32">
+      <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+        <span class="h-px w-10 bg-hi" aria-hidden="true"></span>
+        {service.eyebrow}
+      </p>
+      <h1 class="mt-6 max-w-3xl font-display text-5xl font-semibold tracking-tight text-ink sm:text-6xl">
+        {service.title}
+      </h1>
+      <p class="mt-7 max-w-2xl text-lg leading-relaxed text-ink-soft">{service.intro}</p>
+      <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+        <a href="/contact/#quote" class="btn-hi px-8 py-4 text-base">Scope My Event</a>
+        <a href={site.phoneHref} class="btn-outline px-8 py-4 text-base">
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M3.5 4.5c0-1.1.9-2 2-2h2l1.5 4-2 1.5a11 11 0 005 5l1.5-2 4 1.5v2c0 1.1-.9 2-2 2A12.5 12.5 0 013.5 4.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          </svg>
+          Call {site.phone}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body -->
+  <section class="bg-white py-24 lg:py-32">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="reveal mb-16">
+        <div class="relative aspect-[21/9] overflow-hidden rounded-2xl bg-surface-alt shadow-soft">
+          <img
+            src={service.image}
+            alt={service.name}
+            loading="lazy"
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+        </div>
+      </div>
+
+      <div class="grid gap-16 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+        <!-- Copy -->
+        <div class="reveal">
+          {service.body.map((paragraph) => (
+            <p class="mb-6 text-lg leading-relaxed text-ink-soft">{paragraph}</p>
+          ))}
+
+          {service.faqs && service.faqs.length > 0 && (
+            <div class="mt-12">
+              <h2 class="font-display text-3xl font-semibold tracking-tight text-ink">Frequently Asked Questions</h2>
+              <div class="mt-8 space-y-4">
+                {service.faqs.map((faq) => (
+                  <details class="group rounded-xl border border-ink/8 bg-surface-alt">
+                    <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-5 text-sm font-semibold text-ink [&::-webkit-details-marker]:hidden">
+                      {faq.question}
+                      <svg class="h-4 w-4 shrink-0 text-accent transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                        <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </summary>
+                    <p class="px-6 pb-6 text-sm leading-relaxed text-ink-soft">{faq.answer}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <!-- Benefits sidebar -->
+        <aside class="reveal h-fit rounded-2xl bg-surface-alt p-10 ring-1 ring-ink/8 lg:sticky lg:top-28">
+          <h2 class="font-display text-2xl font-semibold text-ink">Service Benefits</h2>
+          <ul class="mt-6 space-y-5">
+            {service.benefits.map((benefit) => (
+              <li class="flex items-start gap-3 text-sm leading-relaxed text-ink-soft">
+                <svg class="mt-0.5 h-5 w-5 shrink-0 text-hi" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M4 10.5l4 4 8-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                {benefit}
+              </li>
+            ))}
+          </ul>
+          <div class="mt-9 border-t border-ink/8 pt-8">
+            <p class="text-sm text-ink-faint">Ready to get started?</p>
+            <div class="mt-4 flex flex-col gap-3">
+              <a href="/contact/#quote" class="btn-hi px-5 py-3 text-sm">Scope My Event</a>
+              <a href={site.phoneHref} class="btn-outline px-5 py-3 text-sm">Call {site.phone}</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Other services -->
+  <section class="border-t border-ink/8 bg-surface-alt py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display text-3xl font-semibold tracking-tight text-ink">Explore More Services</h2>
+      <div class="mt-8 flex flex-wrap gap-3">
+        {others.map((other) => (
+          <a
+            href={`/services/${other.slug}/`}
+            class="rounded-xl border border-ink/15 bg-white px-6 py-3 text-sm font-semibold text-ink shadow-soft transition-all hover:-translate-y-0.5 hover:border-accent hover:text-accent-dark"
+          >
+            {other.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

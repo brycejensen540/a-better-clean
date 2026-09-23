@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+import { allEvents, eventPages } from '../../data/events';
+import { images } from '../../data/images';
+import CtaBand from '../../components/CtaBand.astro';
+
+const title = 'Event Types We Serve | A Better Clean — Festivals, Fairs & More';
+const description =
+  'Music festivals, fairs, parades, street fests — A Better Clean handles high-throughput cleanup for public gatherings across the Midwest. Call (312) 555-0148.';
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: site.name,
+  url: `${site.url}/events/`,
+  telephone: '+1-312-555-0148',
+  address: { '@type': 'PostalAddress', addressLocality: 'Chicago', addressRegion: 'IL', addressCountry: 'US' },
+  areaServed: allEvents.map((e) => e.name),
+});
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <!-- Page header -->
+  <section class="relative overflow-hidden bg-surface">
+    <div
+      class="pointer-events-none absolute -right-40 -top-40 h-[26rem] w-[26rem] rounded-full opacity-50 blur-3xl"
+      style="background: radial-gradient(closest-side, rgba(46, 94, 78, 0.2), transparent 70%);"
+      aria-hidden="true"
+    ></div>
+    <div class="relative mx-auto max-w-7xl px-4 pb-20 pt-24 sm:px-6 lg:px-8 lg:pb-28 lg:pt-32">
+      <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+        <span class="h-px w-10 bg-hi" aria-hidden="true"></span>
+        Event Types
+      </p>
+      <h1 class="mt-6 max-w-3xl font-display text-5xl font-semibold tracking-tight text-ink sm:text-6xl">
+        If the Crowd Leaves a Trace, We Handle It
+      </h1>
+      <p class="mt-7 max-w-2xl text-lg leading-relaxed text-ink-soft">
+        Every public gathering has its own waste profile — confetti on a parade route, grease on a midway, camping
+        debris at load-out. We scope each event type differently, {site.radius}.
+      </p>
+    </div>
+  </section>
+
+  <!-- Feature photo -->
+  <section class="bg-white pb-24 pt-4 lg:pb-32">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="reveal">
+        <div class="relative aspect-[21/9] overflow-hidden rounded-2xl bg-surface-alt shadow-soft">
+          <img
+            src={images.events['fairs-carnivals']}
+            alt="A fairground ferris wheel against the evening sky"
+            loading="lazy"
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dedicated event-type cards -->
+  <section class="bg-white py-24 lg:py-32">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {eventPages.map((event, i) => (
+          <div class="reveal" style={`transition-delay: ${(i % 4) * 50}ms`}>
+            <a
+              href={`/events/${event.slug}/`}
+              class="card-lift flex h-full flex-col rounded-2xl bg-white p-8 shadow-soft ring-1 ring-ink/5"
+            >
+              <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-hi-light text-hi-dark">
+                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M10 2a6 6 0 00-6 6c0 4.5 6 10 6 10s6-5.5 6-10a6 6 0 00-6-6z" stroke="currentColor" stroke-width="1.6" />
+                  <circle cx="10" cy="8" r="2" stroke="currentColor" stroke-width="1.6" />
+                </svg>
+              </span>
+              <h2 class="mt-5 font-display text-xl font-semibold text-ink">{event.name}</h2>
+              <p class="mt-2 flex-1 text-sm text-ink-faint">
+                {event.name} cleanup — scoped, staffed, and hauled to your event’s profile.
+              </p>
+              <span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent">
+                View details
+                <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- All event types -->
+  <section class="border-t border-ink/8 bg-surface-alt py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="font-display text-3xl font-semibold tracking-tight text-ink">And Everything Else, Too</h2>
+      <p class="mt-4 max-w-2xl text-sm leading-relaxed text-ink-soft">
+        The types below don’t have dedicated pages yet — but the same crews, trucks, and reporting cover them.
+        Call {site.phone} and we’ll scope it.
+      </p>
+      <ul class="mt-8 flex flex-wrap gap-3">
+        {allEvents.filter((e) => !e.slug).map((event) => (
+          <li class="rounded-xl border border-ink/8 bg-white px-5 py-2.5 text-sm font-medium text-ink-faint">
+            {event.name}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

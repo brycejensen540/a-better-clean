@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface text-ink font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    @apply bg-hi/30 text-ink;
+  }
+}
+
+@layer components {
+  /* Buttons — clean, slightly squared, evergreen with amber highlights. */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-sans font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-white hover:bg-accent-dark hover:-translate-y-0.5 hover:shadow-lift;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-hi {
+    @apply btn bg-hi text-ink hover:bg-hi-dark hover:-translate-y-0.5 hover:shadow-lift;
+  }
+
+  .btn-outline {
+    @apply btn border border-ink/15 text-ink hover:border-accent hover:bg-accent hover:text-white hover:-translate-y-0.5;
+  }
+
+  .btn-outline-light {
+    @apply btn border border-white/25 text-white hover:border-white/50 hover:-translate-y-0.5;
+  }
+
+  .btn-ghost {
+    @apply btn text-accent hover:bg-accent-light hover:-translate-y-0.5;
+  }
+
+  /* Card hover — gentle lift with soft shadow. */
+  .card-lift {
+    @apply transition-all duration-200 hover:-translate-y-1 hover:shadow-lift;
+  }
+
+  /* Glass-morphism card — use sparingly for elevated surfaces. */
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-xl border border-white/30 rounded-2xl;
+    box-shadow: 0 4px 24px rgba(20, 33, 26, 0.06);
+  }
+
+  /* ---------- Festival-cleanup effects (restrained) ---------- */
+
+  /* A. Route loops — thin dashes drifting across a section, like a
+     sweeper running its route. Very low opacity, slow. */
+  .loop-line {
+    position: absolute;
+    height: 2px;
+    width: 140px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--loop-color, rgba(46, 94, 78, 0.35)), transparent);
+    opacity: 0;
+    pointer-events: none;
+    animation: loop-drift 16s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+
+  .loop-line--amber {
+    --loop-color: rgba(232, 163, 23, 0.4);
+  }
+
+  /* B. Shine sweep on interactive elements — the "freshly swept" pass. */
+  .shine {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.9s ease;
+    pointer-events: none;
+  }
+
+  .shine:hover::after {
+    left: 160%;
+  }
+
+  /* C. Soft floaters — faint circle outlines, like venue map markers. */
+  .floater {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(232, 163, 23, 0.10), rgba(46, 94, 78, 0.04));
+    border: 1px solid rgba(46, 94, 78, 0.16);
+    opacity: 0;
+    pointer-events: none;
+    animation: floater-float 20s linear infinite;
+    will-change: transform, opacity;
+  }
+
+  /* D. Ground paths — faint vertical light trails along the far edges
+     of the viewport, like sweep paths past the frame. Desktop only. */
+  .ground-path {
+    position: fixed;
+    top: -20px;
+    width: 2px;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, rgba(46, 94, 78, 0.25), transparent);
+    border-radius: 2px;
+    opacity: 0.55;
+    pointer-events: none;
+    animation: ground-flow 11s ease-in infinite;
+  }
+}
+
+/* Effect keyframes */
+@keyframes loop-drift {
+  0% {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  20% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.35;
+  }
+  80% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+}
+
+@keyframes floater-float {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.4;
+  }
+  85% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: translateY(-75vh) scale(1.05);
+    opacity: 0;
+  }
+}
+
+@keyframes ground-flow {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.4;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(105vh);
+    opacity: 0;
+  }
+}
+
+/* Scroll-reveal */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  /* Effects off for reduced-motion users. */
+  .loop-line,
+  .floater,
+  .ground-path {
+    animation: none;
+    opacity: 0;
+  }
+
+  .shine::after {
+    display: none;
+  }
+}

@@ -1,0 +1,296 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import { services } from '../data/services';
+import { allEvents } from '../data/events';
+import { reviews } from '../data/reviews';
+import { images } from '../data/images';
+import ServiceCard from '../components/ServiceCard.astro';
+import ReviewCard from '../components/ReviewCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Loops from '../components/Loops.astro';
+import Floaters from '../components/Floaters.astro';
+
+const title = 'A Better Clean | Festival & Event Waste Removal — Midwest';
+const description =
+  'A Better Clean moves tonnes of waste out of festivals and events — overnight. High-throughput outdoor cleanup so your guests focus on the event, never the cleanup. Call (312) 555-0148.';
+
+const homeReviews = reviews.slice(0, 6);
+
+const featuredServices = services.filter((s) => s.featured);
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: site.name,
+  description: site.description,
+  url: site.url,
+  telephone: '+1-312-555-0148',
+  email: site.email,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Chicago',
+    addressRegion: 'IL',
+    addressCountry: 'US',
+  },
+  areaServed: 'Midwest United States',
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '18:00',
+    },
+  ],
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: site.rating.score,
+    reviewCount: '120',
+  },
+});
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <!-- ============ Hero ============ -->
+  <section class="relative overflow-hidden bg-surface">
+    <div
+      class="pointer-events-none absolute -right-48 -top-48 h-[36rem] w-[36rem] rounded-full opacity-30 blur-3xl"
+      style="background: radial-gradient(closest-side, rgba(46, 94, 78, 0.2), transparent 70%);"
+      aria-hidden="true"
+    ></div>
+    <div
+      class="pointer-events-none absolute -bottom-56 -left-40 h-[30rem] w-[30rem] rounded-full opacity-20 blur-3xl"
+      style="background: radial-gradient(closest-side, rgba(232, 163, 23, 0.16), transparent 70%);"
+      aria-hidden="true"
+    ></div>
+
+    <Floaters />
+    <Loops />
+
+    <div class="relative mx-auto grid max-w-7xl items-center gap-16 px-4 pb-24 pt-20 sm:px-6 lg:grid-cols-[minmax(0,11fr)_minmax(0,10fr)] lg:gap-20 lg:px-8 lg:pb-32 lg:pt-28">
+      <div>
+        <p class="mb-7 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+          <span class="h-px w-10 bg-hi" aria-hidden="true"></span>
+          Chicago, IL · Festivals &amp; events across the Midwest
+        </p>
+        <h1 class="font-display text-5xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl lg:text-[4.25rem]">
+          Guests Remember the Show.<br />
+          <span class="italic text-accent">We Remember the Tonnes.</span>
+        </h1>
+        <p class="mt-8 max-w-xl text-lg leading-relaxed text-ink-soft">
+          A Better Clean moves tonnes of waste out of festivals and public gatherings — during the event and
+          overnight — so your guests focus on the moment, and your crew isn’t buried in the morning after.
+          {site.tagline}
+        </p>
+        <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+          <a href="/contact/#quote" class="btn-hi px-8 py-4 text-base">Scope My Event</a>
+          <a href={site.phoneHref} class="btn-outline px-8 py-4 text-base">
+            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M3.5 4.5c0-1.1.9-2 2-2h2l1.5 4-2 1.5a11 11 0 005 5l1.5-2 4 1.5v2c0 1.1-.9 2-2 2A12.5 12.5 0 013.5 4.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            </svg>
+            Call {site.phone}
+          </a>
+        </div>
+        <div class="mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-ink/8 pt-8">
+          <div>
+            <p class="font-display text-3xl font-semibold text-ink">{site.stats.tonnesPerEvent}</p>
+            <p class="mt-1 text-xs font-semibold uppercase tracking-wider text-ink-faint">Tonnes per event</p>
+          </div>
+          <div>
+            <p class="font-display text-3xl font-semibold text-ink">{site.stats.turnaround}</p>
+            <p class="mt-1 text-xs font-semibold uppercase tracking-wider text-ink-faint">Turnaround</p>
+          </div>
+          <div>
+            <p class="font-display text-3xl font-semibold text-ink">{site.stats.eventsPerSeason}</p>
+            <p class="mt-1 text-xs font-semibold uppercase tracking-wider text-ink-faint">Events a season</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero photo -->
+      <div class="reveal relative">
+        <div class="absolute -right-4 -top-4 hidden h-full w-full rounded-2xl border border-hi/40 lg:block" aria-hidden="true"></div>
+        <div class="relative aspect-[4/5] overflow-hidden rounded-2xl bg-surface-alt shadow-soft">
+          <img
+            src={images.hero}
+            alt="A festival main stage mid-set — crowd, lights, and confetti"
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+        </div>
+        <p class="mt-5 text-center text-xs font-semibold uppercase tracking-widest text-ink-faint">
+          The event your guests see — the cleanup they never do
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Services ============ -->
+  <section class="bg-white py-24 lg:py-36">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="reveal grid gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-end">
+        <div>
+          <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+            <span class="h-px w-10 bg-hi" aria-hidden="true"></span>
+            What We Move
+          </p>
+          <h2 class="mt-5 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+            High-Throughput Cleanup for Events of Every Size
+          </h2>
+        </div>
+        <p class="max-w-md text-base leading-relaxed text-ink-soft lg:pb-2">
+          From full-event waste plans to the Sunday-night pressure wash, we handle the physical aftermath so your team handles the show.
+        </p>
+      </div>
+      <div class="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {featuredServices.map((service, i) => (
+          <div class="reveal" style={`transition-delay: ${(i % 3) * 60}ms`}>
+            <ServiceCard service={service} />
+          </div>
+        ))}
+      </div>
+      <div class="reveal mt-10 text-center">
+        <a href="/services/" class="btn-outline px-7 py-3.5 text-sm">See All Services</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Philosophy ============ -->
+  <section class="relative overflow-hidden bg-ink py-24 lg:py-36">
+    <div
+      class="pointer-events-none absolute -right-40 -top-40 h-[28rem] w-[28rem] rounded-full opacity-30 blur-3xl"
+      style="background: radial-gradient(closest-side, rgba(232, 163, 23, 0.22), transparent 70%);"
+      aria-hidden="true"
+    ></div>
+    <Loops
+      items={[
+        { top: '20%', right: '12%', tone: 'amber', delay: 0 },
+        { top: '46%', left: '48%', tone: 'amber', delay: 3 },
+        { bottom: '22%', right: '26%', tone: 'green', delay: 5 },
+      ]}
+    />
+    <div class="relative mx-auto grid max-w-7xl items-center gap-16 px-4 sm:px-6 lg:grid-cols-2 lg:gap-24 lg:px-8">
+      <div class="reveal order-2 lg:order-1">
+        <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-hi">
+          <span class="h-px w-10 bg-hi/50" aria-hidden="true"></span>
+          Our Philosophy
+        </p>
+        <blockquote class="mt-6 font-display text-3xl font-medium leading-snug text-white sm:text-4xl">
+          “Guests should leave talking about the music, the food, the moment — <em class="italic text-hi">never the garbage.</em>”
+        </blockquote>
+        <p class="mt-7 max-w-xl leading-relaxed text-white/60">
+          We built A Better Clean around one conviction: waste is an operations problem, and operations problems
+          have schedules, equipment, and numbers. Our crews move tonnes — measured by weight, documented by ticket —
+          so organizers get clean gates every morning and a site that passes inspection on Monday.
+        </p>
+        <p class="mt-4 max-w-xl leading-relaxed text-white/60">
+          The measure of our work is invisible: nothing overflowing, nothing in the way, nothing to apologize for.
+          When we do it right, nobody knows we were there. That’s the point.
+        </p>
+        <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+          <a href="/about/" class="btn-outline-light px-7 py-3.5 text-sm">Know More About Us</a>
+          <a href={site.phoneHref} class="btn-outline-light px-7 py-3.5 text-sm">Call Now</a>
+        </div>
+      </div>
+      <div class="reveal order-1 lg:order-2">
+        <div class="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white/5 shadow-soft">
+          <img
+            src={images.about.crew}
+            alt="Cleanup crew collecting and bagging event waste"
+            loading="lazy"
+            class="absolute inset-0 h-full w-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Event types ============ -->
+  <section class="bg-surface py-24 lg:py-36">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="reveal mx-auto max-w-2xl text-center">
+        <p class="flex items-center justify-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+          <span class="h-px w-10 bg-hi" aria-hidden="true"></span>
+          Where We Work
+          <span class="h-px w-10 bg-hi" aria-hidden="true"></span>
+        </p>
+        <h2 class="mt-5 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+          Built for Public Gatherings of Every Shape
+        </h2>
+        <p class="mt-6 text-base leading-relaxed text-ink-soft">
+          Public gatherings of every shape — {site.radius}.
+        </p>
+      </div>
+      <div class="mt-16 grid items-center gap-16 lg:grid-cols-2 lg:gap-24">
+        <div class="reveal">
+          <div class="relative aspect-[4/3] overflow-hidden rounded-2xl bg-surface-alt shadow-soft">
+            <img
+              src={images.events['music-festivals']}
+              alt="A festival crowd at golden hour, hands raised"
+              loading="lazy"
+              class="absolute inset-0 h-full w-full object-cover"
+            />
+          </div>
+        </div>
+        <div class="reveal">
+          <ul class="grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2">
+            {allEvents.map((event) => (
+              <li>
+                {event.slug ? (
+                  <a href={`/events/${event.slug}/`} class="group flex items-center gap-3 text-sm font-semibold text-ink transition-colors hover:text-accent">
+                    <svg class="h-4 w-4 shrink-0 text-hi" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                      <path d="M10 2a6 6 0 00-6 6c0 4.5 6 10 6 10s6-5.5 6-10a6 6 0 00-6-6z" stroke="currentColor" stroke-width="1.6" />
+                      <circle cx="10" cy="8" r="2" stroke="currentColor" stroke-width="1.6" />
+                    </svg>
+                    {event.name}
+                  </a>
+                ) : (
+                  <span class="flex items-center gap-3 text-sm font-medium text-ink-faint">
+                    <svg class="h-4 w-4 shrink-0 text-ink-faint/50" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                      <path d="M10 2a6 6 0 00-6 6c0 4.5 6 10 6 10s6-5.5 6-10a6 6 0 00-6-6z" stroke="currentColor" stroke-width="1.6" />
+                      <circle cx="10" cy="8" r="2" stroke="currentColor" stroke-width="1.6" />
+                    </svg>
+                    {event.name}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+          <a href="/events/" class="mt-10 inline-flex items-center gap-2 text-sm font-semibold text-accent transition-colors hover:text-accent-dark">
+            See all event types
+            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M4 10h12m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Testimonials ============ -->
+  <section class="bg-white py-24 lg:py-36">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="reveal mx-auto max-w-2xl text-center">
+        <p class="flex items-center justify-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+          <span class="h-px w-10 bg-hi" aria-hidden="true"></span>
+          Event Partners
+          <span class="h-px w-10 bg-hi" aria-hidden="true"></span>
+        </p>
+        <h2 class="mt-5 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+          The Teams Who Stop Thinking About Cleanup
+        </h2>
+        <p class="mt-6 text-base text-ink-soft">
+          Trusted by <strong class="text-ink">{site.rating.count}</strong> organizers running events {site.radius}
+        </p>
+      </div>
+      <div class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {homeReviews.map((review, i) => (
+          <div class="reveal" style={`transition-delay: ${(i % 3) * 60}ms`}>
+            <ReviewCard review={review} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

@@ -1,0 +1,12 @@
+---
+// Thin, slow-moving light trails along the far edges of the viewport —
+// sweep paths past the frame. Desktop only (hidden below lg) and disabled
+// for reduced-motion users via the CSS in global.css.
+---
+
+<div class="pointer-events-none fixed inset-0 z-0 hidden lg:block" aria-hidden="true">
+  <span class="ground-path" style="left: 14px; animation-delay: 0s;"></span>
+  <span class="ground-path" style="left: 28px; animation-delay: 5s;"></span>
+  <span class="ground-path" style="right: 14px; animation-delay: 2.6s;"></span>
+  <span class="ground-path" style="right: 28px; animation-delay: 7.2s;"></span>
+</div>

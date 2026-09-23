@@ -1,0 +1,254 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+import { services } from '../data/services';
+import { allEvents } from '../data/events';
+
+const title = 'Contact | A Better Clean — Scope Your Event Cleanup';
+const description =
+  'Request an event cleanup quote from A Better Clean. Tell us the dates, site, and expected crowd — we scope the tonnage, crew, and equipment. Call (312) 555-0148.';
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Contact A Better Clean',
+  url: `${site.url}/contact/`,
+  mainEntity: {
+    '@type': 'LocalBusiness',
+    name: site.name,
+    telephone: '+1-312-555-0148',
+    email: site.email,
+    address: { '@type': 'PostalAddress', addressLocality: 'Chicago', addressRegion: 'IL', addressCountry: 'US' },
+  },
+});
+
+const inputClass =
+  'w-full rounded-xl border border-ink/15 bg-white px-4 py-3 text-sm text-ink placeholder:text-ink-faint focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30';
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <!-- Page header -->
+  <section class="relative overflow-hidden bg-surface">
+    <div
+      class="pointer-events-none absolute -right-40 -top-40 h-[26rem] w-[26rem] rounded-full opacity-30 blur-3xl"
+      style="background: radial-gradient(closest-side, rgba(46, 94, 78, 0.2), transparent 70%);"
+      aria-hidden="true"
+    ></div>
+    <div class="relative mx-auto max-w-7xl px-4 pb-20 pt-24 sm:px-6 lg:px-8 lg:pb-28 lg:pt-32">
+      <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+        <span class="h-px w-10 bg-hi" aria-hidden="true"></span>
+        Let’s Scope It
+      </p>
+      <h1 class="mt-6 font-display text-5xl font-semibold tracking-tight text-ink sm:text-6xl">
+        Tell Us About Your Event
+      </h1>
+      <p class="mt-7 max-w-2xl text-lg leading-relaxed text-ink-soft">
+        Dates, site, and expected crowd are all we need to start. We’ll scope the tonnage, crew, and equipment —
+        and send a transparent, itemized quote.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-24 lg:py-32">
+    <div class="mx-auto grid max-w-7xl gap-16 px-4 sm:px-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:px-8">
+      <!-- Form -->
+      <div class="reveal">
+        <h2 class="font-display text-3xl font-semibold tracking-tight text-ink">Request an Event Quote</h2>
+        <p class="mt-3 text-sm leading-relaxed text-ink-soft">
+          Fill out the form and we’ll get back to you with a scoped estimate. Prefer to talk? Call{' '}
+          <a href={site.phoneHref} class="font-semibold text-accent hover:text-accent-dark">{site.phone}</a>.
+        </p>
+
+        <form
+          id="quote-form"
+          class="mt-10 space-y-6"
+          data-email={site.email}
+          data-testid="quote-form"
+        >
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label for="name" class="mb-2 block text-sm font-semibold text-ink">Full name</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                autocomplete="name"
+                placeholder="Jane Doe"
+                class={inputClass}
+              />
+            </div>
+            <div>
+              <label for="org" class="mb-2 block text-sm font-semibold text-ink">Organization / event</label>
+              <input
+                id="org"
+                name="org"
+                type="text"
+                required
+                autocomplete="organization"
+                placeholder="Lakeshore Music Fest"
+                class={inputClass}
+              />
+            </div>
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label for="phone" class="mb-2 block text-sm font-semibold text-ink">Phone number</label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                required
+                autocomplete="tel"
+                placeholder="(312) 555-0123"
+                class={inputClass}
+              />
+            </div>
+            <div>
+              <label for="eventType" class="mb-2 block text-sm font-semibold text-ink">Event type</label>
+              <select id="eventType" name="eventType" class={inputClass}>
+                {allEvents.map((event) => (
+                  <option value={event.name}>{event.name}</option>
+                ))}
+                <option value="Other">Other / Not sure</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label for="dates" class="mb-2 block text-sm font-semibold text-ink">Event dates</label>
+              <input
+                id="dates"
+                name="dates"
+                type="text"
+                placeholder="e.g. July 18–20, plus load-out"
+                class={inputClass}
+              />
+            </div>
+            <div>
+              <label for="attendance" class="mb-2 block text-sm font-semibold text-ink">Expected attendance</label>
+              <input
+                id="attendance"
+                name="attendance"
+                type="text"
+                placeholder="e.g. 25,000/day"
+                class={inputClass}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="message" class="mb-2 block text-sm font-semibold text-ink">Site details</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              placeholder="Tell us about the grounds — size, vendor count, camping, surfaces, city requirements, and anything that worries you."
+              class={inputClass}
+            ></textarea>
+          </div>
+
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <button type="submit" class="btn-hi px-8 py-3.5 text-base">Request a Quote</button>
+            <p class="text-xs leading-relaxed text-ink-faint">
+              Submitting opens your email app with the details pre-filled. For the fastest response, call{' '}
+              <a href={site.phoneHref} class="font-semibold text-accent hover:text-accent-dark">{site.phone}</a>.
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <!-- Contact details -->
+      <div class="reveal space-y-8">
+        <div class="rounded-2xl bg-surface-alt p-9 ring-1 ring-ink/8">
+          <h2 class="font-display text-2xl font-semibold text-ink">Contact Details</h2>
+          <ul class="mt-6 space-y-5 text-sm">
+            <li class="flex items-start gap-4">
+              <svg class="mt-0.5 h-5 w-5 shrink-0 text-accent" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M3.5 4.5c0-1.1.9-2 2-2h2l1.5 4-2 1.5a11 11 0 005 5l1.5-2 4 1.5v2c0 1.1-.9 2-2 2A12.5 12.5 0 013.5 4.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+              </svg>
+              <div>
+                <p class="font-semibold text-ink">Phone</p>
+                <a href={site.phoneHref} class="text-ink-soft hover:text-accent-dark">{site.phone}</a>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <svg class="mt-0.5 h-5 w-5 shrink-0 text-accent" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M3 5h14v10H3V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                <path d="M3 6l7 5 7-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <div>
+                <p class="font-semibold text-ink">Email</p>
+                <a href={site.emailHref} class="text-ink-soft hover:text-accent-dark">{site.email}</a>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <svg class="mt-0.5 h-5 w-5 shrink-0 text-accent" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M10 2a6 6 0 00-6 6c0 4.5 6 10 6 10s6-5.5 6-10a6 6 0 00-6-6z" stroke="currentColor" stroke-width="1.6" />
+                <circle cx="10" cy="8" r="2" stroke="currentColor" stroke-width="1.6" />
+              </svg>
+              <div>
+                <p class="font-semibold text-ink">Location</p>
+                <p class="text-ink-soft">{site.address} · {site.radius}</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-4">
+              <svg class="mt-0.5 h-5 w-5 shrink-0 text-accent" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.6" />
+                <path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+              <div>
+                <p class="font-semibold text-ink">Hours</p>
+                <p class="text-ink-soft">{site.hours.weekdays}<br />{site.hours.weekends}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="rounded-2xl bg-white p-9 shadow-soft ring-1 ring-ink/5">
+          <h2 class="font-display text-2xl font-semibold text-ink">Our Services</h2>
+          <ul class="mt-5 space-y-3">
+            {services.map((s) => (
+              <li>
+                <a href={`/services/${s.slug}/`} class="text-sm font-medium text-ink-soft transition-colors hover:text-accent-dark">
+                  {s.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick event list -->
+  <section class="border-t border-ink/8 bg-surface-alt py-20">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-center font-display text-3xl font-semibold tracking-tight text-ink">Event Types We Cover</h2>
+      <ul class="mt-10 flex flex-wrap justify-center gap-3">
+        {allEvents.map((event) => (
+          <li>
+            {event.slug ? (
+              <a href={`/events/${event.slug}/`} class="rounded-xl border border-ink/15 bg-white px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:border-accent hover:text-accent-dark">
+                {event.name}
+              </a>
+            ) : (
+              <span class="rounded-xl border border-ink/8 bg-white px-5 py-2.5 text-sm font-medium text-ink-faint">
+                {event.name}
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+      <div class="mt-10 text-center">
+        <a href="/events/" class="text-sm font-semibold text-accent hover:text-accent-dark">View all event types</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import '../scripts/form.ts';
+  </script>
+</BaseLayout>

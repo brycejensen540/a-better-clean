@@ -1,0 +1,37 @@
+---
+import { site } from '../data/site';
+import { images } from '../data/images';
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  title = 'Put the Cleanup on Our Shoulders',
+  subtitle = 'Tell us the dates, the site, and the expected crowd — we’ll scope the tonnage, crew, and equipment, and send a transparent quote.',
+} = Astro.props;
+---
+
+<section class="relative overflow-hidden">
+  <img src={images.cta} alt="" aria-hidden="true" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+  <div class="absolute inset-0 bg-ink/80" aria-hidden="true"></div>
+  <div class="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <div class="reveal mx-auto flex max-w-3xl flex-col items-center gap-7 text-center">
+      <h2 class="font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">{title}</h2>
+      <p class="max-w-xl text-base leading-relaxed text-white/65">{subtitle}</p>
+      <div class="mt-2 flex flex-col gap-3 sm:flex-row">
+        <a href="/contact/#quote" class="btn-hi px-8 py-3.5 text-base">Scope My Event</a>
+        <a href={site.phoneHref} class="btn-outline-light px-8 py-3.5 text-base">
+          <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M3.5 4.5c0-1.1.9-2 2-2h2l1.5 4-2 1.5a11 11 0 005 5l1.5-2 4 1.5v2c0 1.1-.9 2-2 2A12.5 12.5 0 013.5 4.5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          </svg>
+          Call {site.phone}
+        </a>
+      </div>
+      <p class="text-xs text-white/45">
+        {site.hours.weekdays} · {site.hours.weekends} · {site.address}
+      </p>
+    </div>
+  </div>
+</section>

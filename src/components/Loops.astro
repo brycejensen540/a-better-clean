@@ -1,0 +1,37 @@
+---
+// Sparse, slow-drifting route lines — a sweeper running its loop.
+// Place a handful near the hero or key CTAs, never more.
+
+interface LoopItem {
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
+  tone?: 'green' | 'amber';
+  delay?: number;
+  dur?: number;
+}
+
+interface Props {
+  items?: LoopItem[];
+  class?: string;
+}
+
+const defaults: LoopItem[] = [
+  { top: '24%', left: '6%', tone: 'amber', delay: 0, dur: 16 },
+  { top: '56%', left: '10%', tone: 'green', delay: 5, dur: 19 },
+  { top: '38%', right: '8%', tone: 'green', delay: 2.5, dur: 17 },
+  { bottom: '18%', right: '14%', tone: 'amber', delay: 7.5, dur: 21 },
+];
+
+const { items = defaults, class: className = '' } = Astro.props;
+---
+
+<div class={`pointer-events-none absolute inset-0 ${className}`} aria-hidden="true">
+  {items.map((s) => (
+    <span
+      class={`loop-line ${s.tone === 'amber' ? 'loop-line--amber' : ''}`}
+      style={`${s.top ? `top:${s.top};` : ''}${s.bottom ? `bottom:${s.bottom};` : ''}${s.left ? ` left:${s.left};` : ''}${s.right ? ` right:${s.right};` : ''}animation-delay:${s.delay ?? 0}s;animation-duration:${s.dur ?? 16}s;`}
+    />
+  ))}
+</div>

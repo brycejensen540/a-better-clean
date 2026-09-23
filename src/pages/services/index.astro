@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+import { services } from '../../data/services';
+import CtaBand from '../../components/CtaBand.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+
+const title = 'Event Cleanup Services | A Better Clean — Midwest';
+const description =
+  'Full-service event cleanup, overnight turnarounds, recycling & diversion, restroom service, and pressure washing for festivals and events. Call A Better Clean at (312) 555-0148.';
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: `${site.name} services`,
+  itemListElement: services.map((s, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: s.name,
+    url: `${site.url}/services/${s.slug}/`,
+  })),
+});
+---
+
+<BaseLayout title={title} description={description} schema={schema}>
+  <!-- Page header -->
+  <section class="relative overflow-hidden bg-surface">
+    <div
+      class="pointer-events-none absolute -right-40 -top-40 h-[26rem] w-[26rem] rounded-full opacity-50 blur-3xl"
+      style="background: radial-gradient(closest-side, rgba(46, 94, 78, 0.2), transparent 70%);"
+      aria-hidden="true"
+    ></div>
+    <div class="relative mx-auto max-w-7xl px-4 pb-20 pt-24 sm:px-6 lg:px-8 lg:pb-28 lg:pt-32">
+      <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-accent">
+        <span class="h-px w-10 bg-hi" aria-hidden="true"></span>
+        Our Services
+      </p>
+      <h1 class="mt-6 max-w-3xl font-display text-5xl font-semibold tracking-tight text-ink sm:text-6xl">
+        Every Service Built Around One Promise
+      </h1>
+      <p class="mt-7 max-w-2xl text-lg leading-relaxed text-ink-soft">
+        Guests never see the waste. From the first bin placed before load-in to the last pressure-wash pass Sunday
+        night, our services cover the whole lifecycle of event waste — measured in tonnes, delivered overnight.
+      </p>
+    </div>
+  </section>
+
+  <!-- Services grid -->
+  <section class="bg-white py-24 lg:py-32">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        {services.map((service, i) => (
+          <div class="reveal" style={`transition-delay: ${(i % 3) * 60}ms`}>
+            <ServiceCard service={service} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
