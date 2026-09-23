@@ -37,6 +37,8 @@ jobs:
       - run: npm run build
 
       - uses: cloudflare/wrangler-action@v3
+        env:
+          CLOUDFLARE_ACCOUNT_ID: d37328b22828329ad49b07dcda3ee1cc
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           command: pages deploy dist --project-name=a-better-clean --branch=${{ github.ref_name }}
