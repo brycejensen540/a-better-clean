@@ -6,11 +6,9 @@ gatherings so guests can focus on the event — never the cleanup. Built with
 Astro + TypeScript + Tailwind CSS, with an auto-generated sitemap and SEO metadata
 baked into every page.
 
-> Design language: the same layout system as the Apollo Professional site
-> (`../apollo`), rebuilt for a different business — **evergreen + safety-amber**
-> palette replacing the teal/navy, festival-and-event photography throughout, and
-> window-cleaning micro-effects (bubbles, drips, sparkles) swapped for
-> cleanup-themed ones (sweeper route lines, venue-map floaters, ground paths).
+> Design language: **evergreen + safety-amber** palette, festival-and-event
+> photography throughout, and cleanup-themed micro-effects (sweeper route lines,
+> venue-map floaters, ground paths).
 
 ## Pages
 
@@ -44,12 +42,8 @@ npm run build      # static build → dist/
 npm run preview    # serve the built site
 ```
 
-The repo root provides a portable Node in `.tooling/` (for machines without
-system Node):
-
-```bash
-export PATH="$PWD/.tooling/node-v24.19.0-win-x64:$PATH"
-```
+Requires Node 18.17+ (any recent system Node works — check `.github/workflows/deploy.yml`
+for the version CI uses).
 
 ## Where to edit things
 
